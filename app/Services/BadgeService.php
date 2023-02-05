@@ -11,11 +11,22 @@ use App\Abstracts\AbstractBadge;
 class BadgeService extends AbstractBadge{
     protected EventService $event;
 
+    /**
+     * Undocumented function
+     *
+     * @param EventService $event
+     */
     public function __construct(EventService $event)
     {
         $this->event = $event;
     }
 
+    /**
+     * Get user current badge
+     *
+     * @param User $user
+     * @return string
+     */
     public function getCurrentBadge(User $user): string
     {
         $currentBadge = $user->badges()->get('name');
@@ -30,6 +41,12 @@ class BadgeService extends AbstractBadge{
         return $currentBadgeName;
     }
 
+    /**
+     * Get user next badge
+     *
+     * @param User $user
+     * @return string
+     */
     public function getNextBadge(User $user): string
     {
         $currentBadgeName = $this->getCurrentBadge($user);
@@ -43,6 +60,13 @@ class BadgeService extends AbstractBadge{
         return $nextBadgeName;
     }
     
+    /**
+     * Unlock a new badge
+     *
+     * @param integer $totalAchievements
+     * @param User $user
+     * @return string
+     */
     public function unlockBadge(int $totalAchievements, User $user): string
     {
         try{
