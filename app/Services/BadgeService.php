@@ -9,14 +9,14 @@ use App\Services\EventService;
 use App\Abstracts\AbstractBadge;
 
 class BadgeService extends AbstractBadge{
-    protected $event;
+    protected EventService $event;
 
     public function __construct(EventService $event)
     {
         $this->event = $event;
     }
 
-    public function getCurrentBadge(User $user)
+    public function getCurrentBadge(User $user): string
     {
         $currentBadge = $user->badges()->get('name');
         if(count($currentBadge) > 0){
@@ -30,7 +30,7 @@ class BadgeService extends AbstractBadge{
         return $currentBadgeName;
     }
 
-    public function getNextBadge(User $user)
+    public function getNextBadge(User $user): string
     {
         $currentBadgeName = $this->getCurrentBadge($user);
         if($currentBadgeName == 'Beginner'){
@@ -43,7 +43,7 @@ class BadgeService extends AbstractBadge{
         return $nextBadgeName;
     }
     
-    public function unlockBadge($totalAchievements, User $user)
+    public function unlockBadge(int $totalAchievements, User $user): string
     {
         try{
             $badgeExist = $this->checkIfBadgeExists($totalAchievements);
