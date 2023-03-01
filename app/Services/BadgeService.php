@@ -9,6 +9,7 @@ use App\Services\EventService;
 use App\Abstracts\AbstractBadge;
 
 class BadgeService extends AbstractBadge{
+    
     protected EventService $event;
 
     /**
