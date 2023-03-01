@@ -29,16 +29,8 @@ class BadgeService extends AbstractBadge{
      */
     public function getCurrentBadge(User $user): string
     {
-        $currentBadge = $user->badges()->get('name');
-        if(count($currentBadge) > 0){
-            $currentBadgeModel = $currentBadge->last();
-            $currentBadgeName = $currentBadgeModel['name'];
-            
-        }else{
-            $currentBadgeName = 'Beginner';
-        }
-
-        return $currentBadgeName;
+        $currentBadge = $user->badges()->latest('id')->value('name');
+        return $currentBadge ?? 'Beginner';
     }
 
     /**
@@ -51,13 +43,12 @@ class BadgeService extends AbstractBadge{
     {
         $currentBadgeName = $this->getCurrentBadge($user);
         if($currentBadgeName == 'Beginner'){
-            $nextBadgeName = 'Intermediate';
-        }else{
-            $currentBadgeId = Badge::where('name', $currentBadgeName)->first();
-            $nextBadge = Badge::where('id', '>', $currentBadgeId['id'])->first();
-            $nextBadgeName = $nextBadge['name'] ?? '';
+            return 'Intermediate';
         }
-        return $nextBadgeName;
+        
+        $currentBadgeId = Badge::where('name', $currentBadgeName)->value('id');
+        $nextBadge = Badge::where('id', '>', $currentBadgeId)->value('name');
+        return $nextBadge ?? '';
     }
     
     /**
@@ -75,16 +66,18 @@ class BadgeService extends AbstractBadge{
                 $badge = $this->checkIfBadgeAlreadyUnlockedByUser($badgeExist['name'], $user);
                 if($badge){
                     return "No new badge unlocked";
-                }else{
-                    $badge = $this->unlockNewBadge($badgeExist['name'], $user);
-                    $this->event->triggerBadgeEvent($badge['name'], $user);
-                    info(['Badge Unlocked', $totalAchievements, $badge['name']]);
                 }
+                
+                $badge = $this->unlockNewBadge($badgeExist['name'], $user);
+                $this->event->triggerBadgeEvent($badge['name'], $user);
+                info(['Badge Unlocked', $totalAchievements, $badge['name']]);
+                return $badge['name'];
             }else{
                 return "No new badge unlocked";
             }
         }catch(Exception $e){
-            return response()->json(['message' => $e->getMessage()]);
+            info($e->getMessage());
+            return "An error occurred while unlocking the badge";
         }
     }
 }
