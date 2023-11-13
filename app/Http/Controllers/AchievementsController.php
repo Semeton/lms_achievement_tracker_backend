@@ -35,7 +35,7 @@ class AchievementsController extends Controller
                 'next_available_achievements' => [$nextLessonAchievement, $nextCommentAchievement],
                 'current_badge' => $currentBadgeName,
                 'next_badge' => $nextBadgeName,
-                'remaing_to_unlock_next_badge' => $remainingAchievement
+                'remaining_to_unlock_next_badge' => $remainingAchievement
             ]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
