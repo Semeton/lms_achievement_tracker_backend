@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Events\LessonWatched;
 use App\Services\BadgeService;
 use App\Services\AchievementService;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ListenLessonWatched
 {

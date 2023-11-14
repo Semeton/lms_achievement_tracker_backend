@@ -4,9 +4,6 @@ namespace App\Listeners;
 
 use App\Services\BadgeService;
 use App\Events\CommentWritten;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use App\Http\Controllers\AchievementsController;
 use App\Services\AchievementService;
 
 class ListenCommentWritten
