@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
-use App\Models\Badge;
-use App\Models\LessonAchievement;
-use App\Models\CommentAchievement;
 use App\Services\AchievementService;
 use App\Services\BadgeService;
 

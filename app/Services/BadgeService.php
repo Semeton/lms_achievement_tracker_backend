@@ -40,7 +40,6 @@ class BadgeService extends AbstractBadge{
             $nextBadge = Badge::where('id', '>', $currentBadgeId['id'])->first();
             $nextBadgeName = $nextBadge['name'] ?? '';
         }
-
         return $nextBadgeName;
     }
     
