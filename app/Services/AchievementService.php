@@ -56,9 +56,21 @@ class AchievementService extends AbstractAchievement {
         return $nextCommentAchievement;
     }
 
-    public function remaing_to_unlock_next_badge(User $user)
+    public function achievementsRemaingToUnlockNextBadge(User $user)
     {
-
+        $unlockedAchievements = $this->getUserAchievements($user);
+        $achievements = count($unlockedAchievements);
+        
+        if($achievements < 4){
+            $remainingAchievement = 4 - $achievements;
+        }else if($achievements >= 4 && $achievements < 8){
+            $remainingAchievement = 8 - $achievements;
+        }else if($achievements >= 8 && $achievements < 10){
+            $remainingAchievement = 10 - $achievements;
+        }else{
+            $remainingAchievement = 0;
+        }
+        return $remainingAchievement;
     }
     
     public function unlockLessonAchievement($lessonCount, User $user)

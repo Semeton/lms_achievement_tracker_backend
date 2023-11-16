@@ -20,33 +20,15 @@ class AchievementsController extends Controller
         $this->achievement = $achievement;
         $this->badge = $badge;
     }
-    public function index($userId)
+    public function index(User $user)
     {
         try{
-            if(!User::find($userId)){
-                return response()->json(['message' => 'User not found'], 404);
-            }
-            $user = User::find($userId);
-            
-            
-            
             $unlockedAchievements = $this->achievement->getUserAchievements($user);
             $nextLessonAchievement = $this->achievement->getNextLessonAchievements($user);
             $nextCommentAchievement = $this->achievement->getNextCommentAchievement($user);
+            $remainingAchievement = $this->achievement->achievementsRemaingToUnlockNextBadge($user);
             $currentBadgeName = $this->badge->getCurrentBadge($user);
             $nextBadgeName = $this->badge->getNextBadge($user);
-
-            $achievements = count($unlockedAchievements);
-            
-            if($achievements < 4){
-                $remainingAchievement = 4 - $achievements;
-            }else if($achievements >= 4 && $achievements < 8){
-                $remainingAchievement = 8 - $achievements;
-            }else if($achievements >= 8 && $achievements < 10){
-                $remainingAchievement = 10 - $achievements;
-            }else{
-                $remainingAchievement = 0;
-            }
             
             return response()->json([
                 'unlocked_achievements' => $unlockedAchievements,
