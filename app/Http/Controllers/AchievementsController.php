@@ -20,6 +20,7 @@ class AchievementsController extends Controller
         $this->achievement = $achievement;
         $this->badge = $badge;
     }
+    
     public function index(User $user)
     {
         try{
