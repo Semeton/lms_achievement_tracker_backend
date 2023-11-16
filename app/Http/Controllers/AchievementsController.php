@@ -29,14 +29,6 @@ class AchievementsController extends Controller
             $user = User::find($userId);
             $unlockedAchievements = $this->achievement->getUserAchievements($user);
             
-            // $lessonAchievement = $this->achievement->getUserAchievements($user, 'lesson');
-            // if(count($lessonAchievement) > 0){
-            //     $lastLessonAchievement = $lessonAchievement->last();
-            //     $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement['name'])->first();
-            //     $nextLessonAchievement = LessonAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
-            // }else{
-            //     $nextLessonAchievement = "First Lesson Watched";
-            // }
             $achievements = count($unlockedAchievements);
             
             if($achievements < 4){
