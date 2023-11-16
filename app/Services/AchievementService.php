@@ -55,6 +55,11 @@ class AchievementService extends AbstractAchievement {
 
         return $nextCommentAchievement;
     }
+
+    public function remaing_to_unlock_next_badge(User $user)
+    {
+
+    }
     
     public function unlockLessonAchievement($lessonCount, User $user)
     {
