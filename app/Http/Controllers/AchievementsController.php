@@ -37,16 +37,6 @@ class AchievementsController extends Controller
             // }else{
             //     $nextLessonAchievement = "First Lesson Watched";
             // }
-            
-            // $commentAchievement = $this->achievement->getUserAchievements($user, 'comment');
-            // if(count($commentAchievement) > 0){
-            //     $lastCommentAchievement = $commentAchievement->last();
-            //     $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement['name'])->first();
-            //     $nextCommentAchievement = CommentAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
-            // }else{
-            //     $nextCommentAchievement = "First Comment Written";
-            // }
-            
             $achievements = count($unlockedAchievements);
             
             if($achievements < 4){
