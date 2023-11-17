@@ -59,17 +59,6 @@ class AchievementsController extends Controller
                 $remainingAchievement = 0;
             }
             
-            // $currentBadge = $user->badges()->get('name');
-            // if(count($currentBadge) > 0){
-            //     $currentBadgeModel = $currentBadge->last();
-            //     $currentBadgeName = $currentBadgeModel['name'];
-            //     $currentBadgeId = Badge::where('name', $currentBadgeName)->first();
-            //     $nextBadge = Badge::where('id', $currentBadgeId['id'] + 1)->first();
-            //     $nextBadgeName = $nextBadge['name'] ?? '';
-            // }else{
-            //     $currentBadgeName = 'Beginner';
-            //     $nextBadgeName = 'Intermediate';
-            // }
             $nextLessonAchievement = $this->achievement->getNextLessonAchievements($user);
             $nextCommentAchievement = $this->achievement->getNextCommentAchievement($user);
             $currentBadgeName = $this->badge->getCurrentBadge($user);
