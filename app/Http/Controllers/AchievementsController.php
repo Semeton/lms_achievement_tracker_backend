@@ -29,23 +29,23 @@ class AchievementsController extends Controller
             $user = User::find($userId);
             $unlockedAchievements = $this->achievement->getUserAchievements($user);
             
-            $lessonAchievement = $this->achievement->getUserAchievements($user, 'lesson');
-            if(count($lessonAchievement) > 0){
-                $lastLessonAchievement = $lessonAchievement->last();
-                $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement['name'])->first();
-                $nextLessonAchievement = LessonAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
-            }else{
-                $nextLessonAchievement = "First Lesson Watched";
-            }
+            // $lessonAchievement = $this->achievement->getUserAchievements($user, 'lesson');
+            // if(count($lessonAchievement) > 0){
+            //     $lastLessonAchievement = $lessonAchievement->last();
+            //     $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement['name'])->first();
+            //     $nextLessonAchievement = LessonAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
+            // }else{
+            //     $nextLessonAchievement = "First Lesson Watched";
+            // }
             
-            $commentAchievement = $this->achievement->getUserAchievements($user, 'comment');
-            if(count($commentAchievement) > 0){
-                $lastCommentAchievement = $commentAchievement->last();
-                $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement['name'])->first();
-                $nextCommentAchievement = CommentAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
-            }else{
-                $nextCommentAchievement = "First Comment Written";
-            }
+            // $commentAchievement = $this->achievement->getUserAchievements($user, 'comment');
+            // if(count($commentAchievement) > 0){
+            //     $lastCommentAchievement = $commentAchievement->last();
+            //     $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement['name'])->first();
+            //     $nextCommentAchievement = CommentAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
+            // }else{
+            //     $nextCommentAchievement = "First Comment Written";
+            // }
             
             $achievements = count($unlockedAchievements);
             
@@ -70,6 +70,8 @@ class AchievementsController extends Controller
             //     $currentBadgeName = 'Beginner';
             //     $nextBadgeName = 'Intermediate';
             // }
+            $nextLessonAchievement = $this->achievement->getNextLessonAchievements($user);
+            $nextCommentAchievement = $this->achievement->getNextCommentAchievement($user);
             $currentBadgeName = $this->badge->getCurrentBadge($user);
             $nextBadgeName = $this->badge->getNextBadge($user);
             
