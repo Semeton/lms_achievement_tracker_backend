@@ -38,7 +38,7 @@ class AchievementsController extends Controller
                 $nextLessonAchievement = "First Lesson Watched";
             }
             
-            $commentAchievement = $user->achievements()->where('achievement_type', 'comment')->pluck('name');
+            $commentAchievement = $this->achievement->getUserAchievements($user, 'comment');
             if(count($commentAchievement) > 0){
                 $lastCommentAchievement = $commentAchievement->last();
                 $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement['name'])->first();
