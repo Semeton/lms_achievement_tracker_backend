@@ -13,6 +13,18 @@ class AchievementService extends AbstractAchievement {
     {
         $this->event = $event;
     }
+
+    public function getUserAchievements(User $user, $type = 'all')
+    {
+        if($type == 'comment'){
+
+        }else if($type == 'comment'){
+            $unlockedAchievements = $user->achievements()->where('achievement_type', 'lesson')->pluck('name');
+        }else{
+            $unlockedAchievements = $user->achievements()->pluck('name');
+        }
+        return $unlockedAchievements;
+    }
     
     public function unlockLessonAchievement($lessonCount, User $user)
     {

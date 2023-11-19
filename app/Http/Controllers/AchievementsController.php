@@ -7,14 +7,17 @@ use App\Models\User;
 use App\Models\Badge;
 use App\Models\LessonAchievement;
 use App\Models\CommentAchievement;
+use App\Services\AchievementService;
 use App\Services\BadgeService;
 
 class AchievementsController extends Controller
 {
     public $badge;
+    public $achievement;
     
-    public function __construct(BadgeService $badge)
+    public function __construct(AchievementService $achievement, BadgeService $badge)
     {
+        $this->achievement = $achievement;
         $this->badge = $badge;
     }
     public function index($userId)
@@ -24,9 +27,9 @@ class AchievementsController extends Controller
                 return response()->json(['message' => 'User not found'], 404);
             }
             $user = User::find($userId);
-            $unlockedAchievements = $user->achievements()->pluck('name');
+            $unlockedAchievements = $this->achievement->getUserAchievements($user);
             
-            $lessonAchievement = $user->achievements()->where('achievement_type', 'lesson')->get('name');
+            $lessonAchievement = $user->achievements()->where('achievement_type', 'lesson')->pluck('name');
             if(count($lessonAchievement) > 0){
                 $lastLessonAchievement = $lessonAchievement->last();
                 $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement['name'])->first();
@@ -35,7 +38,7 @@ class AchievementsController extends Controller
                 $nextLessonAchievement = "First Lesson Watched";
             }
             
-            $commentAchievement = $user->achievements()->where('achievement_type', 'comment')->get('name');
+            $commentAchievement = $user->achievements()->where('achievement_type', 'comment')->pluck('name');
             if(count($commentAchievement) > 0){
                 $lastCommentAchievement = $commentAchievement->last();
                 $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement['name'])->first();
