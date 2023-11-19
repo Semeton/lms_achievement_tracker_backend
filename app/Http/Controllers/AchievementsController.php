@@ -29,7 +29,7 @@ class AchievementsController extends Controller
             $user = User::find($userId);
             $unlockedAchievements = $this->achievement->getUserAchievements($user);
             
-            $lessonAchievement = $user->achievements()->where('achievement_type', 'lesson')->pluck('name');
+            $lessonAchievement = $this->achievement->getUserAchievements($user, 'lesson');
             if(count($lessonAchievement) > 0){
                 $lastLessonAchievement = $lessonAchievement->last();
                 $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement['name'])->first();

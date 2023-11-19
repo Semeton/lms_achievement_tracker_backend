@@ -14,12 +14,12 @@ class AchievementService extends AbstractAchievement {
         $this->event = $event;
     }
 
-    public function getUserAchievements(User $user, $type = 'all')
+    public function getUserAchievements(User $user, $type = '')
     {
         if($type == 'comment'){
-
-        }else if($type == 'comment'){
-            $unlockedAchievements = $user->achievements()->where('achievement_type', 'lesson')->pluck('name');
+            $unlockedAchievements = $user->achievements()->where('achievement_type', $type)->pluck('name');
+        }else if($type == 'lesson'){
+            $unlockedAchievements = $user->achievements()->where('achievement_type', $type)->pluck('name');
         }else{
             $unlockedAchievements = $user->achievements()->pluck('name');
         }
