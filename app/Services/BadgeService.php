@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use App\Models\User;
+use App\Models\Badge;
 use App\Services\EventService;
 use App\Abstracts\AbstractBadge;
 
@@ -13,6 +14,34 @@ class BadgeService extends AbstractBadge{
     public function __construct(EventService $event)
     {
         $this->event = $event;
+    }
+
+    public function getCurrentBadge(User $user)
+    {
+        $currentBadge = $user->badges()->get('name');
+        if(count($currentBadge) > 0){
+            $currentBadgeModel = $currentBadge->last();
+            $currentBadgeName = $currentBadgeModel['name'];
+            
+        }else{
+            $currentBadgeName = 'Beginner';
+        }
+
+        return $currentBadgeName;
+    }
+
+    public function getNextBadge(User $user)
+    {
+        $currentBadgeName = $this->getCurrentBadge($user);
+        if($currentBadgeName == 'Beginner'){
+            $nextBadgeName = 'Intermediate';
+        }else{
+            $currentBadgeId = Badge::where('name', $currentBadgeName)->first();
+            $nextBadge = Badge::where('id', '>', $currentBadgeId['id'])->first();
+            $nextBadgeName = $nextBadge['name'] ?? '';
+        }
+
+        return $nextBadgeName;
     }
     
     public function unlockBadge($totalAchievements, User $user)
