@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use App\Models\Badge;
-use Illuminate\Http\Request;
-use App\Events\BadgeUnlocked;
 use App\Models\LessonAchievement;
 use App\Models\CommentAchievement;
-use App\Events\AchievementUnlocked;
+use App\Services\BadgeService;
 
 class AchievementsController extends Controller
 {
+    public $badge;
+    
+    public function __construct(BadgeService $badge)
+    {
+        $this->badge = $badge;
+    }
     public function index($userId)
     {
         try{
@@ -52,17 +56,19 @@ class AchievementsController extends Controller
                 $remainingAchievement = 0;
             }
             
-            $currentBadge = $user->badges()->get('name');
-            if(count($currentBadge) > 0){
-                $currentBadgeModel = $currentBadge->last();
-                $currentBadgeName = $currentBadgeModel['name'];
-                $currentBadgeId = Badge::where('name', $currentBadgeName)->first();
-                $nextBadge = Badge::where('id', $currentBadgeId['id'] + 1)->first();
-                $nextBadgeName = $nextBadge['name'] ?? '';
-            }else{
-                $currentBadgeName = 'Beginner';
-                $nextBadgeName = 'Intermediate';
-            }
+            // $currentBadge = $user->badges()->get('name');
+            // if(count($currentBadge) > 0){
+            //     $currentBadgeModel = $currentBadge->last();
+            //     $currentBadgeName = $currentBadgeModel['name'];
+            //     $currentBadgeId = Badge::where('name', $currentBadgeName)->first();
+            //     $nextBadge = Badge::where('id', $currentBadgeId['id'] + 1)->first();
+            //     $nextBadgeName = $nextBadge['name'] ?? '';
+            // }else{
+            //     $currentBadgeName = 'Beginner';
+            //     $nextBadgeName = 'Intermediate';
+            // }
+            $currentBadgeName = $this->badge->getCurrentBadge($user);
+            $nextBadgeName = $this->badge->getNextBadge($user);
             
             return response()->json([
                 'unlocked_achievements' => $unlockedAchievements,
