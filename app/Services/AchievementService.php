@@ -9,32 +9,33 @@ use App\Models\CommentAchievement;
 use App\Abstracts\AbstractAchievement;
 
 class AchievementService extends AbstractAchievement {
-    protected $event;
+    
+    protected EventService $event;
 
     public function __construct(EventService $event)
     {
         $this->event = $event;
     }
 
-    public function getUserAchievements(User $user, $type = '')
+    public function getUserAchievements(User $user, string $type = ''): array
     {
         if($type == 'comment'){
-            $unlockedAchievements = $user->achievements()->where('achievement_type', $type)->pluck('name');
+            $unlockedAchievements = $user->achievements()->where('achievement_type', $type)->pluck('name')->toArray();
         }else if($type == 'lesson'){
-            $unlockedAchievements = $user->achievements()->where('achievement_type', $type)->pluck('name');
+            $unlockedAchievements = $user->achievements()->where('achievement_type', $type)->pluck('name')->toArray();
         }else{
-            $unlockedAchievements = $user->achievements()->pluck('name');
+            $unlockedAchievements = $user->achievements()->pluck('name')->toArray();
         }
         return $unlockedAchievements;
     }
 
-    public function getNextLessonAchievements(User $user)
+    public function getNextLessonAchievements(User $user): string
     {
         $lessonAchievement = $this->getUserAchievements($user, 'lesson');
         if(count($lessonAchievement) > 0){
-            $lastLessonAchievement = $lessonAchievement->last();
-            $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement['name'])->first();
-            $nextLessonAchievement = LessonAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
+            $lastLessonAchievement = $lessonAchievement[array_key_last($lessonAchievement)];
+            $lastLessonAchievementId = LessonAchievement::where('name', $lastLessonAchievement)->first();
+            $nextLessonAchievement = LessonAchievement::where('id', $lastLessonAchievementId['id'] + 1)->first()['name'] ?? '';
         }else{
             $nextLessonAchievement = "First Lesson Watched";
         }
@@ -42,13 +43,13 @@ class AchievementService extends AbstractAchievement {
         return $nextLessonAchievement;
     }
 
-    public function getNextCommentAchievement(User $user)
+    public function getNextCommentAchievement(User $user): string
     {
         $commentAchievement = $this->getUserAchievements($user, 'comment');
         if(count($commentAchievement) > 0){
-            $lastCommentAchievement = $commentAchievement->last();
-            $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement['name'])->first();
-            $nextCommentAchievement = CommentAchievement::where('id', $lastLessonAchievementId['id'] + 1)->get()->first()['name'] ?? '';
+            $lastCommentAchievement = $commentAchievement[array_key_last($commentAchievement)];
+            $lastLessonAchievementId = CommentAchievement::where('name', $lastCommentAchievement)->first();
+            $nextCommentAchievement = CommentAchievement::where('id', $lastLessonAchievementId['id'] + 1)->first()['name'] ?? '';
         }else{
             $nextCommentAchievement = "First Comment Written";
         }
@@ -56,7 +57,7 @@ class AchievementService extends AbstractAchievement {
         return $nextCommentAchievement;
     }
 
-    public function achievementsRemaingToUnlockNextBadge(User $user)
+    public function achievementsRemaingToUnlockNextBadge(User $user): int
     {
         $unlockedAchievements = $this->getUserAchievements($user);
         $achievements = count($unlockedAchievements);
@@ -73,7 +74,7 @@ class AchievementService extends AbstractAchievement {
         return $remainingAchievement;
     }
     
-    public function unlockLessonAchievement($lessonCount, User $user)
+    public function unlockLessonAchievement(int $lessonCount, User $user): void
     {
         try{
             $achievementExist = $this->checkLessonAchievementExist($lessonCount);
@@ -82,14 +83,14 @@ class AchievementService extends AbstractAchievement {
                 $this->event->triggerAchievementEvent($achievement['name'], $user);
                 info(['Achievement Unlocked', $lessonCount, $achievement['name']]);
             }else{
-                return "No new achievement unlocked";
+                return;
             }
         }catch(Exception $e){
             return response()->json(['message' => $e->getMessage()]);
         }
     }
 
-    public function unlockCommentAchievement($commentCount, User $user)
+    public function unlockCommentAchievement(int $commentCount, User $user): void
     {
         try{
             $achievementExist = $this->checkCommentAchievementExist($commentCount);
@@ -98,7 +99,7 @@ class AchievementService extends AbstractAchievement {
                 $this->event->triggerAchievementEvent($achievement['name'], $user);
                 info(['Achievement Unlocked', $commentCount, $achievement['name']]);
             }else{
-                return "No new achievement unlocked";
+                return;
             }
         }catch(Exception $e){
             return response()->json(['message' => $e->getMessage()]);
