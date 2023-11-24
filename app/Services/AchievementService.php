@@ -83,10 +83,12 @@ class AchievementService extends AbstractAchievement {
                 $this->event->triggerAchievementEvent($achievement['name'], $user);
                 info(['Achievement Unlocked', $lessonCount, $achievement['name']]);
             }else{
-                return;
+                // return;
+                info("No new achievement unlocked");
             }
         }catch(Exception $e){
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
+            info($e->getMessage());
         }
     }
 
@@ -99,10 +101,12 @@ class AchievementService extends AbstractAchievement {
                 $this->event->triggerAchievementEvent($achievement['name'], $user);
                 info(['Achievement Unlocked', $commentCount, $achievement['name']]);
             }else{
-                return;
+                // return;
+                info("No new achievement unlocked");
             }
         }catch(Exception $e){
-            return response()->json(['message' => $e->getMessage()]);
+            // return response()->json(['message' => $e->getMessage()]);
+            info($e->getMessage());
         }
     }
 }
