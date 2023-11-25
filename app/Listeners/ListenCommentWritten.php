@@ -11,8 +11,8 @@ use App\Services\AchievementService;
 
 class ListenCommentWritten
 {
-    protected $achievementService;
-    protected $badgeService;
+    protected AchievementService $achievementService;
+    protected BadgeService $badgeService;
     /**
      * Create the event listener.
      */

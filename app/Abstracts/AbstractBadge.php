@@ -4,6 +4,7 @@ namespace App\Abstracts;
 
 use App\Models\User;
 use App\Models\Badge;
+use App\Models\UserBadge;
 
 abstract class AbstractBadge{
     /**
@@ -23,9 +24,9 @@ abstract class AbstractBadge{
      *
      * @param string $badgeName
      * @param User $user
-     * @return Badge|null
+     * @return UserBadge|null
      */
-    public function checkIfBadgeAlreadyUnlockedByUser(string $badgeName, User $user): ?Badge {
+    public function checkIfBadgeAlreadyUnlockedByUser(string $badgeName, User $user): ?UserBadge {
         $exist = $user->badges()->where('name', $badgeName)->first();
         return $exist;
     }
@@ -35,9 +36,9 @@ abstract class AbstractBadge{
      *
      * @param string $badgeName
      * @param User $user
-     * @return Badge
+     * @return UserBadge
      */
-    public function unlockNewBadge(string $badgeName, User $user): Badge {
+    public function unlockNewBadge(string $badgeName, User $user): UserBadge {
         $badge = $user->badges()->create(['name' => $badgeName]);
         return $badge;
     }
