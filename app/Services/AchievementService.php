@@ -17,6 +17,13 @@ class AchievementService extends AbstractAchievement {
         $this->event = $event;
     }
 
+    /**
+     * Get user achievments
+     *
+     * @param User $user
+     * @param string $type
+     * @return array
+     */
     public function getUserAchievements(User $user, string $type = ''): array
     {
         if($type == 'comment'){
@@ -29,6 +36,12 @@ class AchievementService extends AbstractAchievement {
         return $unlockedAchievements;
     }
 
+    /**
+     * Get user nexct lesson achievement
+     *
+     * @param User $user
+     * @return string
+     */
     public function getNextLessonAchievements(User $user): string
     {
         $lessonAchievement = $this->getUserAchievements($user, 'lesson');
@@ -43,6 +56,12 @@ class AchievementService extends AbstractAchievement {
         return $nextLessonAchievement;
     }
 
+    /**
+     * Get user next comment achievement
+     *
+     * @param User $user
+     * @return string
+     */
     public function getNextCommentAchievement(User $user): string
     {
         $commentAchievement = $this->getUserAchievements($user, 'comment');
@@ -57,6 +76,12 @@ class AchievementService extends AbstractAchievement {
         return $nextCommentAchievement;
     }
 
+    /**
+     * Number of achievements to unlock the next badge
+     *
+     * @param User $user
+     * @return integer
+     */
     public function achievementsRemaingToUnlockNextBadge(User $user): int
     {
         $unlockedAchievements = $this->getUserAchievements($user);
@@ -74,6 +99,13 @@ class AchievementService extends AbstractAchievement {
         return $remainingAchievement;
     }
     
+    /**
+     * Unlock a new lesson achievement for user
+     *
+     * @param integer $lessonCount
+     * @param User $user
+     * @return void
+     */
     public function unlockLessonAchievement(int $lessonCount, User $user): void
     {
         try{
@@ -92,6 +124,13 @@ class AchievementService extends AbstractAchievement {
         }
     }
 
+    /**
+     * Unlock new comment achievement for user
+     *
+     * @param integer $commentCount
+     * @param User $user
+     * @return void
+     */
     public function unlockCommentAchievement(int $commentCount, User $user): void
     {
         try{
