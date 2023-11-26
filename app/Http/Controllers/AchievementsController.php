@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Exception;
@@ -18,9 +20,9 @@ class AchievementsController extends Controller
         $this->badge = $badge;
     }
     
-    public function index(User $user)
+    public function index(User $user): \Illuminate\Http\JsonResponse
     {
-        try{
+        try {
             $unlockedAchievements = $this->achievement->getUserAchievements($user);
             $nextLessonAchievement = $this->achievement->getNextLessonAchievements($user);
             $nextCommentAchievement = $this->achievement->getNextCommentAchievement($user);
@@ -35,7 +37,7 @@ class AchievementsController extends Controller
                 'next_badge' => $nextBadgeName,
                 'remaing_to_unlock_next_badge' => $remainingAchievement
             ]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()]);
         }
     }
