@@ -14,6 +14,12 @@ class AchievementsController extends Controller
     public $badge;
     public $achievement;
     
+    /**
+     * Constructor class
+     *
+     * @param AchievementService $achievement
+     * @param BadgeService $badge
+     */
     public function __construct(AchievementService $achievement, BadgeService $badge)
     {
         $this->achievement = $achievement;
