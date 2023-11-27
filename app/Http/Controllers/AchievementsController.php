@@ -6,8 +6,9 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
-use App\Services\AchievementService;
 use App\Services\BadgeService;
+use Illuminate\Http\JsonResponse;
+use App\Services\AchievementService;
 
 class AchievementsController extends Controller
 {
@@ -26,7 +27,7 @@ class AchievementsController extends Controller
         $this->badge = $badge;
     }
     
-    public function index(User $user): \Illuminate\Http\JsonResponse
+    public function index(User $user): JsonResponse
     {
         try {
             $unlockedAchievements = $this->achievement->getUserAchievements($user);
