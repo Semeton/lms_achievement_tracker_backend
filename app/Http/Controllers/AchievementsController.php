@@ -27,6 +27,12 @@ class AchievementsController extends Controller
         $this->badge = $badge;
     }
     
+    /**
+     * Returns users achievements
+     *
+     * @param User $user
+     * @return JsonResponse
+     */
     public function index(User $user): JsonResponse
     {
         try {
