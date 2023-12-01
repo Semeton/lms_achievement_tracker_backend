@@ -33,4 +33,5 @@ class ListenLessonWatched
         $achievements = $user->achievements()->count();
         $this->badgeService->unlockBadge($achievements, $user);
     }
+    // 
 }
